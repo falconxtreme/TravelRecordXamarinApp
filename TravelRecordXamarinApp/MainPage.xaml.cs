@@ -21,7 +21,7 @@ namespace TravelRecordXamarinApp
 
             if (isEmailEmpty || isPasswordEmpty)
             {
-
+                //aqui va el codigo de campos inválidos
             }
             else
             {
