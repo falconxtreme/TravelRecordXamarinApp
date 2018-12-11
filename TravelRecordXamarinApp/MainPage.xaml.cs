@@ -25,7 +25,7 @@ namespace TravelRecordXamarinApp
             }
             else
             {
-
+                Navigation.PushAsync(new HomePage());
             }
         }
     }
