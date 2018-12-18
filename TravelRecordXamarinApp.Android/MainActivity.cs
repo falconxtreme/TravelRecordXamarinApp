@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 
 using Android.App;
 using Android.Content.PM;
@@ -20,6 +20,7 @@ namespace TravelRecordXamarinApp.Droid
 
             base.OnCreate(savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            Xamarin.FormsMaps.Init(this, savedInstanceState);
 
 
             string dbName = "travel_db.sqlite";
