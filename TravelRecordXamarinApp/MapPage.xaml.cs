@@ -6,6 +6,8 @@ using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
 using Plugin.Geolocator;
 using Plugin.Geolocator.Abstractions;
+using SQLite;
+using TravelRecordXamarinApp.Model;
 
 namespace TravelRecordXamarinApp
 {
@@ -62,27 +64,69 @@ namespace TravelRecordXamarinApp
         {
             base.OnAppearing();
 
-            if(hasLocationPermission)
+            if (hasLocationPermission)
             {
-                var locator = CrossGeolocator.Current; 
+                var locator = CrossGeolocator.Current;
                 locator.PositionChanged += Locator_PositionChanged;
                 await locator.StartListeningAsync(TimeSpan.Zero, 100);
             }
 
             GetLocation();
+
+            using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
+            {
+                conn.CreateTable<Post>();
+                var posts = conn.Table<Post>().ToList();
+
+                DisplayInMap(posts);
+            }
         }
 
-        protected override void OnDisappearing()
+        private void DisplayInMap(List<Post> posts)
+        {
+
+
+
+            foreach (var post in posts)
+            {
+                try
+                {
+                    var position = new Xamarin.Forms.Maps.Position(post.Latitude, post.Longitude);
+
+                    var pin = new Xamarin.Forms.Maps.Pin()
+                    {
+                        Type = Xamarin.Forms.Maps.PinType.SavedPin,
+                        Position = position,
+                        Label = post.VenueName,
+                        Address = post.Address
+                    };
+
+                    locationsMap.Pins.Add(pin);
+                }
+                catch (NullReferenceException nre)
+                {
+
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+
+            }
+        }
+
+        protected override async void OnDisappearing()
         {
             base.OnDisappearing();
 
-            CrossGeolocator.Current.StopListeningAsync();
             CrossGeolocator.Current.PositionChanged -= Locator_PositionChanged;
+            await CrossGeolocator.Current.StopListeningAsync();
         }
 
         void Locator_PositionChanged(object sender, Plugin.Geolocator.Abstractions.PositionEventArgs e)
         {
-            MoveMap(e.Position);        
+            MoveMap(e.Position);
         }
 
         private async void GetLocation()

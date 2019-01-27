@@ -5,7 +5,9 @@
     x:Class="TravelRecordXamarinApp.NewTravelPage">
     
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Save" Clicked="ToolbarItem_Clicked"></ToolbarItem>
+        <ToolbarItem Text="Save" 
+                     Icon="save.png"
+                     Clicked="ToolbarItem_Clicked"></ToolbarItem>
     </ContentPage.ToolbarItems>
     
     <ContentPage.Content>

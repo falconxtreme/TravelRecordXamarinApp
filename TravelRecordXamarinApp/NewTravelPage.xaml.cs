@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Plugin.Geolocator;
 using SQLite;
 using TravelRecordXamarinApp.Logic;
@@ -26,28 +25,58 @@ namespace TravelRecordXamarinApp
             venueListView.ItemsSource = venues;
         }
 
-        private void ToolbarItem_Clicked(object sender, EventArgs e)
+        private async void ToolbarItem_Clicked(object sender, EventArgs e)
         {
-            Post post = new Post()
+            try
             {
-                Experience = experienceEntry.Text
-            };
+                var selectedVenue = venueListView.SelectedItem as Venue;
+                Category firstCategory = null;
+                if (selectedVenue.categories != null && selectedVenue.categories.Count > 0)
+                    firstCategory = selectedVenue.categories[0];
+                Post post = new Post()
+                {
+                    Experience = experienceEntry.Text,
+                    CategoryId = firstCategory.id,
+                    CategoryName = firstCategory.name,
+                    Address = selectedVenue.location.address,
+                    Distance = selectedVenue.location.distance,
+                    Latitude = selectedVenue.location.lat,
+                    Longitude = selectedVenue.location.lng,
+                    VenueName = selectedVenue.name,
+                    UserId = App.user.Id
+                };
 
-            int rows=0;
-            using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
+                int rows = 0;
+
+                /*
+                using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
+                {
+                    conn.CreateTable<Post>();
+                    rows = conn.Insert(post);
+                }
+
+                if (rows > 0)
+                {
+                    DisplayAlert("Success", "Experience succesfully inserted", "Ok");
+                }
+                else
+                {
+                    DisplayAlert("Failure", "Experience failed to be inserted", "Ok");
+                }
+                */
+
+                await App.MobileService.GetTable<Post>().InsertAsync(post);
+                await DisplayAlert("Success", "Experience succesfully inserted", "Ok");
+            }
+            catch (NullReferenceException nre)
             {
-                conn.CreateTable<Post>();
-                rows = conn.Insert(post);
+                await DisplayAlert("Failure", "Experience failed to be inserted", "Ok");
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Failure", "Experience failed to be inserted", "Ok");
             }
 
-            if (rows > 0)
-            {
-                DisplayAlert("Success", "Experience succesfully inserted", "Ok");
-            }
-            else
-            {
-                DisplayAlert("Failure", "Experience failed to be inserted", "Ok");
-            }
         }
     }
 }

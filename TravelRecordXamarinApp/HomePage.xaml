@@ -5,10 +5,14 @@
     xmlns:local="clr-namespace:TravelRecordXamarinApp"
     x:Class="TravelRecordXamarinApp.HomePage">
     <TabbedPage.ToolbarItems>
-        <ToolbarItem Text="Add" 
+        <ToolbarItem Text="Add"
+                     Icon="add.png"
                      Clicked="ToolbarItem_Clicked"></ToolbarItem>
     </TabbedPage.ToolbarItems>
-    <local:HistoryPage Title="History"></local:HistoryPage>
-    <local:MapPage Title="Map"></local:MapPage>
-    <local:ProfilePage Title="Profile"></local:ProfilePage>
+    <local:HistoryPage Title="History"
+                       Icon="home.png"></local:HistoryPage>
+    <local:MapPage Title="Map"
+                   Icon="map.png"></local:MapPage>
+    <local:ProfilePage Title="Profile"
+                       Icon="user.png"></local:ProfilePage>
 </TabbedPage>

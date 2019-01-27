@@ -1,4 +1,6 @@
 ﻿using System;
+using Microsoft.WindowsAzure.MobileServices;
+using TravelRecordXamarinApp.Model;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -8,6 +10,12 @@ namespace TravelRecordXamarinApp
     public partial class App : Application
     {
         public static string DatabaseLocation=string.Empty;
+        public static MobileServiceClient MobileService =
+                    new MobileServiceClient(
+                    "https://travelrecordappeder.azurewebsites.net"
+                );
+        public static User user = new User();
+
         public App()
         {
             InitializeComponent();

@@ -9,7 +9,8 @@ namespace TravelRecordXamarinApp.Model
         }
 
         [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
+        public string Id { get; set; }
+        //public int Id { get; set; }
 
         [MaxLength(250)]
         public string Experience { get; set; }
@@ -21,5 +22,7 @@ namespace TravelRecordXamarinApp.Model
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public int Distance { get; set; }
+
+        public string UserId { get; set; }
     }
 }
